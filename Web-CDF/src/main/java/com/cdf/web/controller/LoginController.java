@@ -59,7 +59,7 @@ public class LoginController {
 		// ...handle form...
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName("redirect:/profileGet");
-		System.out.println("aaaaaaaa " + loginForm.getUsername());
+		System.out.println("Username is " + loginForm.getUsername());
 
 		return mav;
 	}

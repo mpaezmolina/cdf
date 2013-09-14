@@ -6,11 +6,11 @@
 </head>
 <body>
 <h1>
-	Login2
+	Login
 </h1>
 
 <P>  The time on the server is ${serverTime}. </P>
-<P>  The time on the server is ${username.username}. </P>
+<P>  The username is ${username.username}. </P>
 <form action="loginForm" method="post">
    <input name="username" value="john" />
    <input name="password" value="pass" />

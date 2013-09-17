@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.cdf.dao.entity.Username;
 import com.cdf.web.form.LoginForm;
+import com.cdf.web.form.validator.LoginFormValidator;
 import com.cdf.web.service.UserService;
 
 @Controller
@@ -24,6 +25,9 @@ public class LoginController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private LoginFormValidator loginFormValidator;
 
 	public void setUserService(UserService userService) {
 		this.userService = userService;
@@ -54,14 +58,23 @@ public class LoginController {
 	}
 
 	@RequestMapping(value = "loginForm", method = RequestMethod.POST)
-	public ModelAndView login_POST(@Valid LoginForm loginForm,
-			BindingResult errors) {
-		// ...handle form...
+	public ModelAndView login_POST(@Valid LoginForm form, BindingResult errors) {
 		ModelAndView mav = new ModelAndView();
+
+		loginFormValidator.validate(form, errors);
+
 		mav.setViewName("redirect:/profileGet");
-		System.out.println("Username is " + loginForm.getUsername());
+		System.out.println("Username is " + form.getUsername());
+
+		if (errors.hasErrors()) {
+			// Handle errors.
+		}
 
 		return mav;
+	}
+
+	public void setLoginFormValidator(LoginFormValidator loginFormValidator) {
+		this.loginFormValidator = loginFormValidator;
 	}
 
 }

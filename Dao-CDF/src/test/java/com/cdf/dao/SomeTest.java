@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import com.cdf.dao.entity.Username;
  
-public class PersonTest {
+public class SomeTest {
  
     private EntityManagerFactory emf;
     private EntityManager em;

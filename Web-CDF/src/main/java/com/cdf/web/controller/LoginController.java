@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +30,7 @@ public class LoginController {
 	@Autowired
 	private LoginFormValidator loginFormValidator;
 
-	public void setUserService(UserService userService) {
-		this.userService = userService;
-	}
+	private String emailServerPort;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(LoginController.class);
@@ -39,6 +38,8 @@ public class LoginController {
 	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)
 	public ModelAndView login_GET(Locale locale) {
 		logger.info("Welcome home! The client locale is {}.", locale);
+		logger.info("Email Server port is " + emailServerPort);
+
 		ModelAndView mav = new ModelAndView();
 
 		Username username = userService.loadUserByUsername(31);
@@ -77,4 +78,12 @@ public class LoginController {
 		this.loginFormValidator = loginFormValidator;
 	}
 
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+
+	@Value("${email.server.port}")
+	public void setEmailServerPort(String emailServerPort) {
+		this.emailServerPort = emailServerPort;
+	}
 }

@@ -1,9 +1,12 @@
 package com.cdf.web.controller;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cdf.dao.entity.Username;
@@ -74,6 +78,37 @@ public class LoginController {
 		return mav;
 	}
 
+	@RequestMapping(value = "testJson", method = RequestMethod.GET)
+	@ResponseBody
+	public List<Username> testJson(HttpServletResponse response) {
+		Username username = new Username();
+		username.setEmail("paezmolina@gmail.com");
+		username.setFavours(null);
+		username.setUsername("omp");
+		username.setFirstname("Matias");
+		username.setLastname("Paez");
+
+		Username username2 = new Username();
+		username2.setEmail("sergiobanus@gmail.com");
+		username2.setFavours(null);
+		username2.setUsername("ban");
+		username2.setFirstname("Sergio");
+		username2.setLastname("Banus");
+		
+		List<Username> list = new ArrayList<Username>();
+		list.add(username);
+		list.add(username2);
+		
+		return list;
+	}
+
+	
+	@RequestMapping(value = "testString", method = RequestMethod.GET)
+	@ResponseBody
+	public String testString(HttpServletResponse response) {
+		return "{\"Students\": [{\"Name\": \"John\",\"Grade\": \"17\"}],\"TotalClass\": \"17\",\"TotalCount\": \"1\"}";
+	}
+	
 	public void setLoginFormValidator(LoginFormValidator loginFormValidator) {
 		this.loginFormValidator = loginFormValidator;
 	}
@@ -86,4 +121,5 @@ public class LoginController {
 	public void setEmailServerPort(String emailServerPort) {
 		this.emailServerPort = emailServerPort;
 	}
+
 }

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>jQuery.getJSON demo</title>
+<style>
+img {
+	height: 100px;
+	float: left;
+}
+</style>
+<script src="http://code.jquery.com/jquery-1.7.2.js"></script>
+</head>
+<body>
+	<div id="images"></div>
+	<script>
+		/*
+			$.getJSON("testString",function(msg){
+		
+			    alert("TotalClass : "+msg.TotalClass);
+			    $.each(msg.Students,function(index,item){
+			        alert(item.Name+ " - "+item.Grade)
+			    });
+			});	
+		 */
+		function addHit() {
+			$.ajax({
+				type : "GET",
+				dataType : 'json',
+				url : "/Web-CDF/testJson",
+				success : function(msg) {
+					//alert("TotalClass : " + msg.TotalClass);
+					$.each(msg,
+							function(index, item) {
+
+								var option = $('<option />');
+								option.attr('value', item.username).text(
+										item.username);
+
+								$('#myDropDown').append(option);
+										
+					});
+
+					/*$.each(msg.Students, function(index, item) {
+						alert(item.Name + " - " + item.Grade)
+					});
+					 */
+				}
+			});
+		}
+	</script>
+	<a href="#" onClick="addHit()">Ajax test</a>
+	<select id="myDropDown" name="myDropDown">
+	</select>
+</body>
+</html>

@@ -15,5 +15,8 @@
 		</property>
 	</bean>
 
+	<bean id="customerService" class="com.cdf.web.util.InitHsql"
+		init-method="initIt" destroy-method="cleanUp">
+	</bean>
 
 </beans>

@@ -46,7 +46,8 @@ public class LoginController {
 
 		ModelAndView mav = new ModelAndView();
 
-		Username username = userService.loadUserByUsername(31);
+		int userId = 1;
+		Username username = userService.loadUserByUsername(userId);
 		mav.addObject("username", username);
 
 		Date date = new Date();

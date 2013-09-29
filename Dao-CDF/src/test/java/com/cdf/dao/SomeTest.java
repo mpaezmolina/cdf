@@ -23,7 +23,7 @@ public class SomeTest {
         BasicConfigurator.configure();
         Logger.getLogger("org").setLevel(Level.ERROR);
  
-        emf = Persistence.createEntityManagerFactory("postgres");
+        emf = Persistence.createEntityManagerFactory("hsqlCdf");
         em = emf.createEntityManager();
     }
  

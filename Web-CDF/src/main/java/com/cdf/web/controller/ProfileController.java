@@ -22,6 +22,8 @@ public class ProfileController {
 	public ModelAndView profile_GET(Locale locale, Model model) {
 		ModelAndView mav = new ModelAndView();
 
+		logger.info("In profile_GET");
+		
 		List<String> aList = new ArrayList<String>();
 		aList.add("a");
 		aList.add("b");

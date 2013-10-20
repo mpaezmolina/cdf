@@ -28,7 +28,7 @@ public class InitHsql {
 		username.setEmail("paezmolina@gmail.com");
 		username.setFirstname("Matias");
 		username.setLastname("Paez Molina");
-		username.setUsername("omplog");
+		username.setUsername("MatiasPM");
 		username.setPassword("123");
 
 		em.persist(username);

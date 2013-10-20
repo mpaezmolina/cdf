@@ -7,12 +7,12 @@ public class GlobalValidator {
 
 	protected void validateUsername(String property, String username,
 			Errors errors) {
-		ValidationUtils.rejectIfEmpty(errors, property, "Enter username.");
+		ValidationUtils.rejectIfEmpty(errors, property, "error.form.username.empty");
 	}
 
 	protected void validatePassword(String property, String password,
 			Errors errors) {
-		ValidationUtils.rejectIfEmpty(errors, property, "Enter password.");
+		ValidationUtils.rejectIfEmpty(errors, property, "error.form.password.empty");
 	}
 
 }

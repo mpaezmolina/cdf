@@ -6,7 +6,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -14,9 +17,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -39,41 +47,48 @@ public class LoginController {
 	private static final Logger logger = LoggerFactory
 			.getLogger(LoginController.class);
 
-	@RequestMapping(value = "/loginForm", method = RequestMethod.GET)
-	public ModelAndView login_GET(Locale locale) {
+	@RequestMapping(value = "loginAction", method = RequestMethod.GET)
+	public ModelAndView login_GET(Locale locale, HttpServletRequest request,
+			@CookieValue("exampleCookie") String cookie) {
+
 		logger.info("Welcome home! The client locale is {}.", locale);
 		logger.info("Email Server port is " + emailServerPort);
+		logger.info("Cookie: " + cookie);
 
 		ModelAndView mav = new ModelAndView();
 
 		int userId = 1;
 		Username username = userService.loadUserByUsername(userId);
-		mav.addObject("username", username);
 
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG,
 				DateFormat.LONG, locale);
-
 		String formattedDate = dateFormat.format(date);
 
 		mav.setViewName("login");
 		mav.addObject("serverTime", formattedDate);
 		mav.addObject("username", username);
+		mav.addObject("loginForm", new LoginForm());
+
+		HttpSession session = request.getSession(true);
+		session.setAttribute("sessionUsername", username);
 
 		return mav;
 	}
 
-	@RequestMapping(value = "loginForm", method = RequestMethod.POST)
+	@RequestMapping(value = "loginAction", method = RequestMethod.POST)
 	public ModelAndView login_POST(@Valid LoginForm form, BindingResult errors) {
 		ModelAndView mav = new ModelAndView();
 
-		loginFormValidator.validate(form, errors);
-
-		mav.setViewName("redirect:/profileGet");
+		// loginFormValidator.validate(form, errors);
 		System.out.println("Username is " + form.getUsername());
-
+		System.out.println("Password is " + form.getPassword());
+		
 		if (errors.hasErrors()) {
 			// Handle errors.
+			mav.setViewName("login");
+		} else {
+			mav.setViewName("redirect:/profileGet");
 		}
 
 		return mav;
@@ -90,26 +105,44 @@ public class LoginController {
 		username.setLastname("Paez");
 
 		Username username2 = new Username();
-		username2.setEmail("sergiobanus@gmail.com");
+		username2.setEmail("johndoe@gmail.com");
 		username2.setFavours(null);
-		username2.setUsername("ban");
-		username2.setFirstname("Sergio");
-		username2.setLastname("Banus");
-		
+		username2.setUsername("jd");
+		username2.setFirstname("john");
+		username2.setLastname("doe");
+
 		List<Username> list = new ArrayList<Username>();
 		list.add(username);
 		list.add(username2);
-		
+
 		return list;
 	}
 
-	
+	@RequestMapping(value = "/users/{userName}", method = RequestMethod.GET)
+	public String findUser(@PathVariable String userName, Model model) {
+		System.out.println("PathVariable= " + userName);
+		return "end";
+	}
+
+	@RequestMapping(value = "/reqParam", method = RequestMethod.GET)
+	public String requestParamExample(@RequestParam("petId") int petId,
+			ModelMap model) {
+		System.out.println(petId);
+		return "end"; 
+	}
+
 	@RequestMapping(value = "testString", method = RequestMethod.GET)
 	@ResponseBody
 	public String testString(HttpServletResponse response) {
 		return "{\"Students\": [{\"Name\": \"John\",\"Grade\": \"17\"}],\"TotalClass\": \"17\",\"TotalCount\": \"1\"}";
 	}
-	
+
+	@RequestMapping("/addCookie")
+	private ModelAndView exampleHandler(HttpServletResponse response) {
+		response.addCookie(new Cookie("exampleCookie", "The cookie's value"));
+		return new ModelAndView("redirect:/loginForm");
+	}
+
 	public void setLoginFormValidator(LoginFormValidator loginFormValidator) {
 		this.loginFormValidator = loginFormValidator;
 	}

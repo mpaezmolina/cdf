@@ -1,8 +1,12 @@
 package com.cdf.web.form;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 public class LoginForm {
 
+	@NotEmpty
 	private String username;
+	@NotEmpty
 	private String password;
 	
 	public String getUsername() {

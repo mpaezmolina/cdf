@@ -16,6 +16,7 @@ public class Favour {
 	private Username username;
 	private String description;
 
+	
 	public Username getUsername() {
 		return username;
 	}
